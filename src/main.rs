@@ -2,6 +2,7 @@ use anyhow::Result;
 use clap::Parser;
 use url::Url;
 
+mod download;
 mod status;
 
 #[derive(Debug, Clone, Parser)]
@@ -15,6 +16,7 @@ struct Args {
 #[derive(Debug, Clone, Parser)]
 enum Subcommand {
     Status(status::Status),
+    Download(download::Download),
 }
 
 #[tokio::main]
@@ -30,5 +32,6 @@ async fn do_main() -> Result<()> {
     let args = Args::parse();
     match args.subcommand {
         Subcommand::Status(c) => c.run(&args.limelight).await,
+        Subcommand::Download(c) => c.run(&args.limelight).await,
     }
 }
