@@ -1,0 +1,32 @@
+name: Release
+
+on: [workflow_dispatch]
+
+jobs:
+  linux-release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@nightly
+      - name: Build
+        run: cargo build --release
+
+  macos-release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@nightly
+        with:
+            targets: aarch64-apple-darwin, x86_64-apple-darwin
+      - name: Build
+        run: cargo build --release
+  
+  windows-release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@nightly
+        with:
+            targets: x86_64-pc-windows-gnu
+      - name: Build
+        run: cargo build --release

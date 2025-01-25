@@ -1,0 +1,24 @@
+{
+    "outputs": {
+        "limelightctl": {
+            "platforms": {
+                "macos-x86_64": {
+                    "regex": "^limelightctl-cli-darwin-",
+                    "path": "limelightctl"
+                },
+                "macos-aarch64": {
+                    "regex": "^limelightctl-cli-darwin-",
+                    "path": "limelightctl"
+                },
+                "linux-x86_64": {
+                    "regex": "^limelightctl-cli-linux-",
+                    "path": "limelightctl"
+                },
+                "windows-x86_64": {
+                    "regex": "^limelightctl-cli-windows-",
+                    "path": "limelightctl.exe"
+                }
+            }
+        }
+    }
+}
