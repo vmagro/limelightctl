@@ -18,6 +18,7 @@ enum ResourceId {
     Pipeline(usize),
     DetectorModel(usize),
     DetectorLabels(usize),
+    FieldMap(usize),
 }
 
 impl ResourceId {
@@ -26,6 +27,7 @@ impl ResourceId {
             Self::Pipeline(idx) => Path::new("pipelines").join(format!("{idx}.toml")),
             Self::DetectorModel(idx) => Path::new("detectors").join(format!("{idx}.model.tflite")),
             Self::DetectorLabels(idx) => Path::new("detectors").join(format!("{idx}.labels.txt")),
+            Self::FieldMap(idx) => Path::new("field").join(format!("{idx}.fmap")),
         }
     }
 
@@ -48,6 +50,11 @@ impl ResourceId {
                 url.query_pairs_mut().append_pair("index", &idx.to_string());
                 url
             }
+            Self::FieldMap(idx) => {
+                let mut url = limelight.join("/upload-fieldmap").expect("this is valid");
+                url.query_pairs_mut().append_pair("index", &idx.to_string());
+                url
+            }
         }
     }
 }
@@ -66,6 +73,7 @@ impl Upload {
                 ResourceId::Pipeline(idx),
                 ResourceId::DetectorModel(idx),
                 ResourceId::DetectorLabels(idx),
+                ResourceId::FieldMap(idx),
             ]
         }) {
             let path = id.disk_relpath();
