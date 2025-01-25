@@ -11,6 +11,7 @@ use url::Url;
 #[derive(Debug, Clone, Parser)]
 pub(crate) struct Download {
     directory: PathBuf,
+    pipelines: Vec<usize>,
 }
 
 #[derive(Debug, Clone, PartialEq)]
@@ -45,7 +46,7 @@ impl Download {
         let dir = Dir::open_ambient_dir(&self.directory, ambient_authority())
             .with_context(|| format!("while opening {}", self.directory.display()))?;
 
-        for id in (0..=9).map(|idx| ResourceId::Pipeline(idx)) {
+        for id in self.pipelines.iter().map(|idx| ResourceId::Pipeline(*idx)) {
             let url = id.download_url(limelight);
             let contents: serde_json::Value = client
                 .get(url.clone())
