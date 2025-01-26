@@ -2,13 +2,9 @@ name: DotSlash
 
 on:
   workflow_run:
-    # These must match the names of the workflows that publish
-    # artifacts to your GitHub release.
-    workflows: [linux-release, macos-release, windows-release]
+    workflows: [release]
     types:
       - completed
-  workflow_dispatch:
-
 
 jobs:
   generate-dotslash-files:
