@@ -6,6 +6,7 @@ use anyhow::Result;
 use cap_std::ambient_authority;
 use cap_std::fs::Dir;
 use clap::Parser;
+use reqwest::header::CONTENT_TYPE;
 use url::Url;
 
 #[derive(Debug, Clone, Parser)]
@@ -57,6 +58,14 @@ impl ResourceId {
             }
         }
     }
+
+    fn content_type(&self) -> &'static str {
+        match self {
+            Self::Pipeline(_) => "application/json",
+            Self::DetectorLabels(_) => "text/plain",
+            _ => "application/octet-stream",
+        }
+    }
 }
 
 impl Upload {
@@ -98,12 +107,14 @@ impl Upload {
 
             let url = id.upload_url(limelight);
             eprintln!("{url}");
-            client
+            let resp = client
                 .post(url.clone())
                 .body(contents)
+                .header(CONTENT_TYPE, id.content_type())
                 .send()
                 .await
                 .with_context(|| format!("while POSTing {url}"))?;
+            resp.error_for_status()?;
         }
         Ok(())
     }
