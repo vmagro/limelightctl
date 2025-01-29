@@ -7,6 +7,8 @@ mod status;
 mod upload;
 
 #[derive(Debug, Clone, Parser)]
+#[clap(version)]
+/// CLI to enable tracking of Limelight configurations in source control
 struct Args {
     #[clap(long, default_value = "http://limelight.local:5807")]
     limelight: Url,
